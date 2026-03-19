@@ -9,6 +9,7 @@ export default function Index() {
     setRodando(!rodando);
   }
 
+
   return (
     <View style={style.container}>
       <Image style={style.image} source={require('./relogio.png')} />
@@ -16,7 +17,7 @@ export default function Index() {
       <Text style={style.timer}>25:00</Text>
       <Pressable onPress={Alternar}
          style={rodando ? style.buttonParar : style.buttonIniciar}>
-          <Text style={style.textButton}></Text>
+          <Text style={style.textButton}>{rodando ? "Parar" : "Inicar"}</Text>
       </Pressable>
     </View>
     <View style={style.footer}>
