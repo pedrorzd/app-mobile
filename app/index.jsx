@@ -1,13 +1,22 @@
+import { useState } from "react";
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 
 export default function Index() {
+
+  const [rodando,setRodando] = useState(false);
+
+  function Alternar(){
+    setRodando(!rodando);
+  }
+
   return (
     <View style={style.container}>
       <Image style={style.image} source={require('./relogio.png')} />
       <View style={style.actions}>
       <Text style={style.timer}>25:00</Text>
-      <Pressable style={style.button}>
-        <Text style={style.textButton}>Começar</Text>
+      <Pressable onPress={Alternar}
+         style={rodando ? style.buttonParar : style.buttonIniciar}>
+          <Text style={style.textButton}></Text>
       </Pressable>
     </View>
     <View style={style.footer}>
@@ -16,6 +25,32 @@ export default function Index() {
     </View>
     </View>
   );
+}
+
+function Cronometro(){
+  const [segundos, setSegundos] = useState(0);
+
+
+  useEffect (() => {
+    let intervalo = null;
+    
+    if(rodando){
+      intervalo = setInterval(() => {
+        setSegundos((prev) => prev +1);
+      }, 1000);
+    } 
+    else{
+      clearInterval(intervalo);
+    }
+
+  return () => clearInterval(intervalo);
+}, [rodando]);
+
+const formatarTempo = () => {
+  const minutos = Math.floor(segundos /60);
+  const segundos = segundos % 60;
+  return `${minutos.toString().padStart(2,'0')}:${segundos.toString().padStart(2,'0')}`
+}
 }
 
 const style = StyleSheet.create({
@@ -46,8 +81,13 @@ const style = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
   },
-  button: {
-    backgroundColor: "#B872FF",
+  buttonIniciar: {
+    backgroundColor: "#0fb64f",
+    borderRadius: 32,
+    padding: 8
+  },
+  buttonParar: {
+    backgroundColor: "#b30816",
     borderRadius: 32,
     padding: 8
   },
